@@ -34,7 +34,6 @@ enum ReportReason {
 enum ReportTargetType {
   POST
   USER
-  COMMENT
 }
 
 model User {
@@ -122,7 +121,10 @@ model Post {
   viewCount         Int                 @default(0)
   likeCount         Int                 @default(0)
   bookmarkCount     Int                 @default(0)
-  commentCount      Int                 @default(0)
+  
+  trendScore        Float               @default(0)
+
+  isDeleted         Boolean             @default(false)
 
   createdAt         DateTime            @default(now())
   updatedAt         DateTime            @updatedAt
@@ -131,6 +133,7 @@ model Post {
   @@index([createdAt])
   @@index([viewCount])
   @@index([likeCount])
+  @@index([trendScore])
 }
 
 model PostImage {
@@ -199,8 +202,7 @@ model Report {
   id              String          @id @default(uuid())
   reason          ReportReason
   description     String?
-
-  targetType      ReportTargetType    @default(POST) 
+  targetType      ReportTargetType    @default(POST)
   
   reporterId      String
   reporter        User                @relation("Reporter", fields: [reporterId], references: [id], onDelete: Cascade)
