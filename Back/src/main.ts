@@ -20,6 +20,8 @@ async function bootstrap() {
     }),
   );
 
+  app.setGlobalPrefix('api/v1');
+
   prismaService.enableShutdownHooks(app);
   await app.listen(process.env.PORT ?? 3000);
 }
